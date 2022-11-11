@@ -1,0 +1,21 @@
+###
+GET http://localhost:3000
+
+###
+GET http://localhost:3000/trival
+
+###
+GET http://localhost:3000/trival/4
+
+###
+GET http://localhost:3000/scoreboard
+
+###
+POST http://localhost:3000/scoreboard
+Content-Type: application/json
+
+{
+    "name":"bob",
+    "age":10,
+    "score":0
+}
