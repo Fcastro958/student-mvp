@@ -1,8 +1,10 @@
 body{
-    display: flex;
+    width: 100%;
+    height: 100%;
 }
 .animate-charcter
 {
+
    text-transform: uppercase;
   background-image: linear-gradient(
     -225deg,
@@ -32,8 +34,13 @@ body{
   }
 }
 #id{
-    flex auto;
+    
 }
+
+#input{
+    margin-bottom: 20px;
+}
+
 .card{
     display: flex;
     flex-direction: column;
@@ -41,4 +48,26 @@ body{
     width: 18rem;
     border-style: solid;
     margin-bottom: 20px;
+    margin-right: 80px;
+}
+
+.header{
+    width: 50%;
+    height: 10%;
+    margin-left: 45%;
+
+}
+.titleA{
+margin-left: 50%;
+}
+ #result{
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+
+.choice{
+    width: 100%;
+    height: 60px;
 }

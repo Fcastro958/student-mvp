@@ -5,7 +5,8 @@ CREATE TABLE triva(
     id serial PRIMARY KEY,
     question varchar,
     correct_answer varchar,
-    options text []
+    options text [],
+    img text
 );
 
 CREATE TABLE scoreboard(
