@@ -1,17 +1,17 @@
 ###
-GET http://localhost:3000
+GET http://localhost:3030
 
 ###
-GET http://localhost:3000/trival
+GET http://localhost:3030/trivia
 
 ###
-GET http://localhost:3000/trival/4
+GET http://localhost:3030/trivissasa/4
 
 ###
-GET http://localhost:3000/scoreboard
+GET http://localhost:3030/scoreboard
 
 ###
-POST http://localhost:3000/scoreboard
+POST http://localhost:3030/scoreboard
 Content-Type: application/json
 
 {

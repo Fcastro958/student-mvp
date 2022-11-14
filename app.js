@@ -1,15 +1,22 @@
 const express = require('express');
 const cors = require('cors');
 const app = express();
-const port = 3030;
+// const port = 3030;
 const {Pool} = require('pg');
-const pool = new Pool({
-    user: 'postgres',
-    host: '127.0.0.1',
-    database: 'trival_d',
-    password: 'docker',
-    port: 5432,
+// const pool = new Pool({
+//     user: 'postgres',
+//     host: '127.0.0.1',
+//     database: 'trival_d',
+//     password: 'docker',
+//     port: 5432,
+// });
+
+const config=require('./config')[process.env.NODE_ENV||'dev'];
+const PORT = config.port;
+const pool= new Pool({
+    connectionString: config.connectionString
 });
+pool.connect();
 app.use(express.json());
 app.use(cors());
 
@@ -17,7 +24,7 @@ app.get('/', (req, res) => {
     res.send('Hello World!');
 });
 //gets all questions 
-app.get('/triva', (req, res)=>{
+app.get('/trivia', (req, res)=>{
     async function getTriva(){
         try{
             const result = await pool.query('SELECT * FROM triva ');
@@ -30,7 +37,7 @@ app.get('/triva', (req, res)=>{
     getTriva();
 });
 //gets certain amount of questions
-app.get('/triva/:id', (req, res)=>{
+app.get('/trivia/:id', (req, res)=>{
     async function getTrivaById(){
         try{
             const result = await pool.query(`SELECT * FROM triva LIMIT ${req.params.id}`);
@@ -56,6 +63,17 @@ app.get('/scoreboard', (req, res)=>{
     getscoreBoard();
 });
 
+// app.delete('/scoreboard/:id',(req, res)=>{
+//     async function deleteScoreBoard(){
+//         try{
+//             const result = await pool.query(`DELETE FROM scoreboard WHERE id = ${req.params.id}`);
+//             res.status(200).send(result.rows);
+//         } catch (e) {
+//             console.error(e.stack);
+//         }
+//     }
+//     deleteScoreBoard();
+// });
 app.post('/scoreboard', (req, res)=>{
     async function createScoreBoard() {
         try{
@@ -64,15 +82,15 @@ app.post('/scoreboard', (req, res)=>{
             let age = scoreBoard.age;
             let score = scoreBoard.score;
             const result = await pool.query(`INSERT INTO scoreboard (name, age, score) VALUES ('${name}', ${age}, ${score})`);
-            res.status(201).send('Your scoreboard was created');
+            res.status(201).send(result.rows);
         } catch (e) {
             console.error(e.stack);
         }
-    }
-    createScoreBoard();
+    } 
 });
 
 
-app.listen(port, () => {
-    console.log(`listening on port ${port}`);
+
+app.listen(PORT, () => {
+    console.log(`listening on port ${PORT}`);
 });
