@@ -87,10 +87,11 @@ app.post('/scoreboard', (req, res)=>{
             console.error(e.stack);
         }
     } 
+    createScoreBoard();
 });
 
 
 
 app.listen(PORT, () => {
-    console.log(`listening on port ${PORT}`);
+    console.log(` back end , listening on port ${PORT}`);
 });
