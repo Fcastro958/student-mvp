@@ -19,3 +19,6 @@ Content-Type: application/json
     "age":10,
     "score":0
 }
+
+###
+DELETE http://localhost:3030/scoreboard/8

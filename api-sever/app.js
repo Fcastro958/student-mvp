@@ -63,17 +63,18 @@ app.get('/scoreboard', (req, res)=>{
     getscoreBoard();
 });
 
-// app.delete('/scoreboard/:id',(req, res)=>{
-//     async function deleteScoreBoard(){
-//         try{
-//             const result = await pool.query(`DELETE FROM scoreboard WHERE id = ${req.params.id}`);
-//             res.status(200).send(result.rows);
-//         } catch (e) {
-//             console.error(e.stack);
-//         }
-//     }
-//     deleteScoreBoard();
-// });
+app.delete('/scoreboard/:id',(req, res)=>{
+    async function deleteScoreBoard(){
+        try{
+            const result = await pool.query(`DELETE FROM scoreboard WHERE id = ${req.params.id}`);
+            res.status(200).send(result.rows);
+        } catch (e) {
+            console.error(e.stack);
+        }
+    }
+    deleteScoreBoard();
+});
+
 app.post('/scoreboard', (req, res)=>{
     async function createScoreBoard() {
         try{

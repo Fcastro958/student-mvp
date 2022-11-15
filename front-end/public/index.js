@@ -4,7 +4,7 @@ const ENV = 'production';
 let apiUrl =
     ENV == 'dev'
         ? 'http://localhost:3001/'
-        : 'https://trivia-mvp-project.onrender.com/';
+        : 'https://student-mvp-api.onrender.com/';
 console.log('API', apiUrl);
 
 
@@ -18,7 +18,7 @@ function clearResults() {
 
 function getAllQuestions() {
     clearResults();
-    fetch('http://localhost:3030/trivia')
+    fetch(apiUrl + 'trivia')
         .then(response => response.json())
         .then(data => {
             for (let i = 0; i < data.length; i++) {
@@ -29,7 +29,7 @@ function getAllQuestions() {
 
 function getScoreBoard() {
     clearResults();
-    fetch('http://localhost:3030/scoreboard')
+    fetch(apiUrl+'scoreboard')
         .then(response => response.json())
         .then(data => {
             for (let i = 0; i < data.length; i++) {
@@ -40,7 +40,7 @@ function getScoreBoard() {
 
 function getInputquestions() {
     clearResults();
-    fetch(`http://localhost:3030/trivia/${$('#input').val()}`)
+    fetch(apiUrl+`trivia/${$('#input').val()}`)
         .then(response => response.json())
         .then(data => {
             for (let i = 0; i < data.length; i++) {
@@ -108,7 +108,7 @@ function getPost() {
     $('#result').append($div);
     $a.on('click', function () {
         clearResults();
-        fetch('http://localhost:3030/scoreboard', {
+        fetch(apiUrl +'scoreboard', {
             // Adding method type
             method: 'POST',
             // Adding body or contents to send
