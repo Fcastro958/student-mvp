@@ -63,7 +63,7 @@ app.get('/scoreboard', (req, res)=>{
     getscoreBoard();
 });
 
-app.delete('/scoreboard/:id',(req, res)=>{
+app.delete('/scoreboard/delete/:id',(req, res)=>{
     async function deleteScoreBoard(){
         try{
             const result = await pool.query(`DELETE FROM scoreboard WHERE id = ${req.params.id}`);

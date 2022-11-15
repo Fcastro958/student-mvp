@@ -3,7 +3,7 @@ const ENV = 'production';
 
 let apiUrl =
     ENV == 'dev'
-        ? 'http://localhost:3001/'
+        ? 'http://localhost:3030/'
         : 'https://student-mvp-api.onrender.com/';
 console.log('API', apiUrl);
 
@@ -12,6 +12,8 @@ $('#submit').on('click', getInputquestions);
 $('#submitTwo').on('click', getAllQuestions);
 $('#ScoreBoard').on('click', getScoreBoard);
 $('#createUser').on('click', getPost);
+$('#deleteUser').on('click', getScoreBoardWithDelete);
+
 function clearResults() {
     $('#result').empty();
 }
@@ -83,6 +85,41 @@ function trivaCards(data) {
     });
 }
 
+function getScoreBoardWithDelete() {
+    clearResults();
+    fetch(apiUrl+'scoreboard')
+        .then(response => response.json())
+        .then(data => {
+            for (let i = 0; i < data.length; i++) {
+                ScoreBoardDisplayForDelete(data[i]);
+            }
+        });
+}
+
+function ScoreBoardDisplayForDelete(data) {
+    console.log(data);
+
+    let $Resultcard = $('<span class="card">');
+    let $cardTitle = $('<h3 class="card-title" style=text-align:center;> <b>ScoreBoard</b></h3>');
+    let $name = $(`<div class='box'> <b></b> Name:${data.name} </div>`);
+    let $age = $(`<div class='box'> <b></b> Age: ${data.age} </div>`);
+    let $score = $(`<div class='box'> <b></b> Score:${data.score} </div>`);
+    let $delete =$('<a id=\'deleteCredentials\' class=\'btn btn-primary\'>Delete User</a>');
+    $Resultcard.append($cardTitle, $name, $age, $score, $delete);
+    $('#result').append($Resultcard);
+    $delete.on('click', function(){
+        clearResults();
+        fetch(`${apiUrl}scoreboard/delete/${data.id}`, {
+            method: 'DELETE',
+        })
+
+            .then(res => res.text())
+            .then(data => {console.log(data);});
+    });
+
+
+}
+
 function ScoreBoardDisplay(data) {
     console.log(data);
 
@@ -94,8 +131,8 @@ function ScoreBoardDisplay(data) {
     $Resultcard.append($cardTitle, $name, $age, $score);
     $('#result').append($Resultcard);
 
-
 }
+
 
 function getPost() {
     clearResults();
