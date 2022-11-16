@@ -62,7 +62,7 @@ app.get('/scoreboard', (req, res)=>{
     }
     getscoreBoard();
 });
-
+//delete scoreboard
 app.delete('/scoreboard/delete/:id',(req, res)=>{
     async function deleteScoreBoard(){
         try{
@@ -75,7 +75,7 @@ app.delete('/scoreboard/delete/:id',(req, res)=>{
     deleteScoreBoard();
 });
 
-app.post('/scoreboard', (req, res)=>{
+app.post('/scoreboard/post', (req, res)=>{
     async function createScoreBoard() {
         try{
             let scoreBoard = req.body;
@@ -83,7 +83,7 @@ app.post('/scoreboard', (req, res)=>{
             let age = scoreBoard.age;
             let score = scoreBoard.score;
             const result = await pool.query(`INSERT INTO scoreboard (name, age, score) VALUES ('${name}', ${age}, ${score})`);
-            res.status(201).send(result.rows);
+            res.status(202).send(result.rows);
         } catch (e) {
             console.error(e.stack);
         }
@@ -91,6 +91,21 @@ app.post('/scoreboard', (req, res)=>{
     createScoreBoard();
 });
 
+app.patch('/scoreboard/patch/:id', (req, res)=>{
+    async function updateScoreBoard() {
+        try{
+            let scoreBoard = req.body;
+            let name = scoreBoard.name;
+            let age = scoreBoard.age;
+            let score = scoreBoard.score;
+            const result = await pool.query(`UPDATE scoreboard SET name='${name}', age= ${age}, score= ${score} WHERE id =${req.params.id}`);
+            res.status(202).send(result.rows);
+        } catch (e) {
+            console.error(e.stack);
+        }
+    }
+    updateScoreBoard();
+});
 
 
 app.listen(PORT, () => {

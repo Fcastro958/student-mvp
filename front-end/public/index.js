@@ -1,3 +1,5 @@
+/* eslint-disable no-undef */
+
 const ENV = 'production';
 //const ENV = 'dev';
 
@@ -13,6 +15,7 @@ $('#submitTwo').on('click', getAllQuestions);
 $('#ScoreBoard').on('click', getScoreBoard);
 $('#createUser').on('click', getPost);
 $('#deleteUser').on('click', getScoreBoardWithDelete);
+$('#updateUser').on('click', getScoreBoardWithUpdate);
 
 function clearResults() {
     $('#result').empty();
@@ -20,7 +23,7 @@ function clearResults() {
 
 function getAllQuestions() {
     clearResults();
-    fetch(apiUrl + 'trivia')
+    fetch(`${apiUrl}trivia`)
         .then(response => response.json())
         .then(data => {
             for (let i = 0; i < data.length; i++) {
@@ -31,7 +34,7 @@ function getAllQuestions() {
 
 function getScoreBoard() {
     clearResults();
-    fetch(apiUrl+'scoreboard')
+    fetch(`${apiUrl}scoreboard`)
         .then(response => response.json())
         .then(data => {
             for (let i = 0; i < data.length; i++) {
@@ -42,7 +45,7 @@ function getScoreBoard() {
 
 function getInputquestions() {
     clearResults();
-    fetch(apiUrl+`trivia/${$('#input').val()}`)
+    fetch(`${apiUrl}trivia/${$('#input').val()}`)
         .then(response => response.json())
         .then(data => {
             for (let i = 0; i < data.length; i++) {
@@ -87,7 +90,7 @@ function trivaCards(data) {
 
 function getScoreBoardWithDelete() {
     clearResults();
-    fetch(apiUrl+'scoreboard')
+    fetch(`${apiUrl}scoreboard`)
         .then(response => response.json())
         .then(data => {
             for (let i = 0; i < data.length; i++) {
@@ -96,9 +99,65 @@ function getScoreBoardWithDelete() {
         });
 }
 
+
+function getScoreBoardWithUpdate() {
+    clearResults();
+    fetch(`${apiUrl}scoreboard`)
+        .then(response => response.json())
+        .then(data => {
+            for (let i = 0; i < data.length; i++) {
+                ScoreBoardDisplayForUpdate(data[i]);
+            }
+        });
+}
+
+function ScoreBoardDisplayForUpdate(data) {
+    console.log(data);
+    let $Resultcard = $('<span class="card">');
+    let $cardTitle = $('<h3 class="card-title" style=text-align:center;> <b>ScoreBoard</b></h3>');
+    let $name = $(`<div class='box'> <b></b> Name:${data.name} </div>`);
+    let $age = $(`<div class='box'> <b></b> Age: ${data.age} </div>`);
+    let $score = $(`<div class='box'> <b></b> Score:${data.score} </div>`);
+    let $update =$('<a id=\'updateCredentials\' class=\'btn btn-primary\'>Update User</a>');
+    $Resultcard.append($cardTitle, $name, $age, $score, $update);
+    $('#result').append($Resultcard);
+    $update.on('click', function(){
+        clearResults();
+        let $div = $('<div id=\'order\' class=\'card\' style=\'width: 25rem;\'></div>');
+        let $input = $('<input class="form-control" type="text" placeholder="name" aria-label="default input example">');
+        let $input1 = $('<input class="form-control" type="text" placeholder="age" aria-label="default input example">');
+        let $input2 = $('<input class="form-control" type="text" placeholder="score" aria-label="default input example">');
+        var $a = $('<a id=\'submit\' class=\'btn btn-primary\'>Submit</a>');
+        $div.append($input, $input1, $input2, $a);
+        $('#result').append($div);
+        $a.on('click', function () {
+            clearResults();
+            fetch(`${apiUrl}scoreboard/patch/${data.id}`, {
+                method: 'PATCH',
+
+                body: JSON.stringify({
+                    name: $input.val(),
+                    age: $input1.val(),
+                    score: $input2.val()
+                }),
+
+                headers: {
+                    'Content-type': 'application/json; charset=UTF-8'
+                }
+
+            })
+
+            // Converting to JSON
+                .then(res => res.json())
+
+            // Displaying results to console
+                .then(data => console.log(data));
+        });
+    });
+}
+
 function ScoreBoardDisplayForDelete(data) {
     console.log(data);
-
     let $Resultcard = $('<span class="card">');
     let $cardTitle = $('<h3 class="card-title" style=text-align:center;> <b>ScoreBoard</b></h3>');
     let $name = $(`<div class='box'> <b></b> Name:${data.name} </div>`);
@@ -112,12 +171,9 @@ function ScoreBoardDisplayForDelete(data) {
         fetch(`${apiUrl}scoreboard/delete/${data.id}`, {
             method: 'DELETE',
         })
-
             .then(res => res.text())
             .then(data => {console.log(data);});
     });
-
-
 }
 
 function ScoreBoardDisplay(data) {
@@ -133,7 +189,6 @@ function ScoreBoardDisplay(data) {
 
 }
 
-
 function getPost() {
     clearResults();
     let $div = $('<div id=\'order\' class=\'card\' style=\'width: 25rem;\'></div>');
@@ -145,7 +200,7 @@ function getPost() {
     $('#result').append($div);
     $a.on('click', function () {
         clearResults();
-        fetch(apiUrl +'scoreboard', {
+        fetch(`${apiUrl}scoreboard/post`, {
             // Adding method type
             method: 'POST',
             // Adding body or contents to send
